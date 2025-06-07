@@ -124,23 +124,20 @@ func menu_invest() {
 	switch opsi_invest {
 
 	case 1:
-		fmt.Println("Investasi Saham")
-		fmt.Println("Masukkan harga pasar ", iterasi.Saham)
-		fmt.Print("Saham : Rp.")
+		fmt.Println("\nInvestasi Saham")
+		fmt.Print("Masukkan harga pasar", iterasi.Saham, "Saham : Rp.")
 		fmt.Scan(&invest.Saham[iterasi.Saham])
 
 		opsi_investasi("Saham")
 	case 2:
-		fmt.Println("Investasi Reksadana")
-		fmt.Println("Masukkan harga pasar ", iterasi.Reksa)
-		fmt.Print("Reksadana : Rp.")
+		fmt.Println("\nInvestasi Reksadana")
+		fmt.Print("Masukkan harga pasar", iterasi.Reksa, "Reksadana : Rp.")
 		fmt.Scan(&invest.Reksa[iterasi.Reksa])
 
 		opsi_investasi("Reksa")
 	case 3:
-		fmt.Println("Investasi Obligasi")
-		fmt.Println("Masukkan harga pasar ", iterasi.Obligasi)
-		fmt.Print("Obligasi : Rp.")
+		fmt.Println("\nInvestasi Obligasi")
+		fmt.Print("Masukkan harga pasar", iterasi.Obligasi, "Obligasi : Rp.")
 		fmt.Scan(&invest.Obligasi[iterasi.Obligasi])
 		opsi_investasi("Obligasi")
 	case 4:
@@ -392,12 +389,12 @@ func tambah_invest(jenisDari string) {
     switch jenisDari {
     case invest.jenis[0]:
     	fmt.Println("================")
-    	fmt.Println("Modal Andas Rp.", hitung_modal(invest.jenis[0]))
-    	fmt.Println("Aset Anda", porto.Saham, "Lembar")
+    	fmt.Println("Modal Anda 	 : Rp.", hitung_modal(invest.jenis[0]))
+    	fmt.Println("Aset Anda        : ", porto.Saham, "Lembar")
+    	fmt.Println("Harga per lembar : Rp.", invest.Saham[iterasi.Saham])    	
     	fmt.Println("================")
 
-    	fmt.Println("Harga per lembar : Rp.", invest.Saham[iterasi.Saham])
-    	fmt.Printf("Dana Investasi : Rp.")
+    	fmt.Printf("Dana Investasi               : Rp.")
     	fmt.Scan(&modal_user)
 
     	jumlah_aset_dibeli = convert_aset(modal_user, invest.Saham[iterasi.Saham])
@@ -405,10 +402,10 @@ func tambah_invest(jenisDari string) {
     	modal.Saham[iterasi.Saham] = modal.Saham[iterasi.Saham] + modal_user
 
     	fmt.Println("Lembar saham yang didapatkan :", jumlah_aset_dibeli)
-    	fmt.Println("Total lembar", porto.Saham)
+    	fmt.Println("Total lembar                 :", porto.Saham)
 
     	aset.Saham = hitung_aset(porto.Saham, invest.Saham[iterasi.Saham])
-     	fmt.Println("Total Nilai Aset", aset.Saham)    	
+     	fmt.Println("Total Nilai Aset             : Rp.", aset.Saham)    	
 
 	    fmt.Println("================")
 	    fmt.Println("1. Kembali")
@@ -427,12 +424,13 @@ func tambah_invest(jenisDari string) {
 
     case invest.jenis[1]:
 	    fmt.Println("================")
-	    fmt.Println("Modal Andae Rp.", hitung_modal(invest.jenis[1]))
-	    fmt.Println("Aset Anda", porto.Reksa, "Unit")
+	    fmt.Println("Modal Anda 	 : Rp.", hitung_modal(invest.jenis[1]))
+	    fmt.Println("Aset Anda        : ", porto.Reksa, "Unit")
+	    fmt.Println("Harga per Unit   : Rp.", invest.Reksa[iterasi.Reksa])
 	    fmt.Println("================")
 
-	    fmt.Println("Harga per Unit : Rp.", invest.Reksa[iterasi.Reksa])
-	    fmt.Printf("Dana Investasi : Rp.")
+
+	    fmt.Printf("Dana Investasi                 : Rp.")
 	    fmt.Scan(&modal_user)	    
 
     	jumlah_aset_dibeli = convert_aset(modal_user, invest.Reksa[iterasi.Reksa])
@@ -440,10 +438,10 @@ func tambah_invest(jenisDari string) {
 	    modal.Reksa[iterasi.Reksa] = modal.Reksa[iterasi.Reksa] + modal_user
 
 	    fmt.Println("Unit Reksadana yang didapatkan :", jumlah_aset_dibeli)
-    	fmt.Println("Total Unit", porto.Reksa)
+    	fmt.Println("Total Unit                     :", porto.Reksa)
 
      	aset.Reksa = hitung_aset(porto.Reksa, invest.Reksa[iterasi.Reksa])
-     	fmt.Println("Total Nilai Aset", aset.Reksa)
+     	fmt.Println("Total Nilai Aset               : Rp.", aset.Reksa)
 
 	    fmt.Println("================")
 	    fmt.Println("1. Kembali")
@@ -463,12 +461,12 @@ func tambah_invest(jenisDari string) {
 
     case invest.jenis[2]:
 	    fmt.Println("================")
-	    fmt.Println("Modal Andaf Rp.", hitung_modal(invest.jenis[2]))
-	    fmt.Println("Aset Anda", porto.Obligasi, "Unit")
+	    fmt.Println("Modal Anda     : Rp.", hitung_modal(invest.jenis[2]))
+	    fmt.Println("Aset Anda      : ", porto.Obligasi, "Unit")
+	    fmt.Println("Harga per Unit : Rp.", invest.Obligasi[iterasi.Obligasi])	    
 	    fmt.Println("================")
 
-	    fmt.Println("Harga per Unit : Rp.", invest.Obligasi[iterasi.Obligasi])
-	    fmt.Printf("Dana Investasi : Rp.")
+	    fmt.Printf("Dana Investasi                : Rp.")
 	    fmt.Scan(&modal_user)
 
 	    jumlah_aset_dibeli = convert_aset(modal_user, invest.Obligasi[iterasi.Obligasi])
@@ -476,10 +474,10 @@ func tambah_invest(jenisDari string) {
 	    modal.Obligasi[iterasi.Obligasi] = modal.Obligasi[iterasi.Obligasi] + modal_user
 
     	fmt.Println("Unit Obligasi yang didapatkan :", jumlah_aset_dibeli)
-    	fmt.Println("Total Unit", porto.Obligasi)
+    	fmt.Println("Total Unit                    :", porto.Obligasi)
 
      	aset.Obligasi = hitung_aset(porto.Obligasi, invest.Obligasi[iterasi.Obligasi])   	
-    	fmt.Println("Total Nilai Aset", aset.Obligasi)
+    	fmt.Println("Total Nilai Aset              : Rp.", aset.Obligasi)
 
 	    fmt.Println("================")
 	    fmt.Println("1. Kembali")
@@ -508,92 +506,74 @@ func tambah_invest(jenisDari string) {
 }
 
 func hapus_invest() {
+    var danaCair float64
+    var pilih int
 
-	var pencairan_aset float64
-	var dana_cair float64
-	var status bool
-	var konfirmasi, setelah int
+    aset.Saham = hitung_aset(porto.Saham, invest.Saham[iterasi.Saham])
+    fmt.Println("================")
+    fmt.Printf("Harga Saham       : Rp%.0f\n", invest.Saham[iterasi.Saham])
+    fmt.Printf("Aset Anda Saat Ini: %.4f Lembar\n", porto.Saham)
+    fmt.Printf("Nilai Aset        : Rp%.0f\n\n", aset.Saham)
 
-	aset.Saham = hitung_aset(porto.Saham, invest.Saham[iterasi.Saham])
+    for {
 
-	status = false
-	fmt.Println("================")
-	fmt.Println("Harga Saham : ", invest.Saham[iterasi.Saham])
-	fmt.Println("Asset Anda Saat ini : ", porto.Saham, "Lembar")
-	fmt.Println("Nilai Aset Rp.", aset.Saham)
+        fmt.Println("Masukkan dana yang akan dicairkan:")
+        fmt.Println("  (2. Kembali, 3. Menu Utama)")
+        fmt.Print("Rp. ")
 
-	// fmt.Scan(&dana_cair)
+        fmt.Scan(&danaCair)
 
-	for status == false {
+        if danaCair == 2 {
+            opsi_investasi("Saham")
+            return
+        } else if danaCair == 3 {
+            return
+        } else if danaCair < 0 {
+            fmt.Println("Dana tidak bisa negatif!")
+        } else if danaCair > aset.Saham {
+            fmt.Println("Dana melebihi nilai aset!")
+        } else {
+            // 3. Konfirmasi pencairan
+            lembarCair := convert_aset(danaCair, invest.Saham[iterasi.Saham])
+            fmt.Printf("\nAnda akan mencairkan Rp%.0f → %.4f lembar\n", danaCair, lembarCair)
+            fmt.Println("Anda yakin?")
+            fmt.Println("1. Ya")
+            fmt.Println("2. Kembali")
+            fmt.Println("3. Menu Utama")
+            fmt.Print("Pilihan: ")
 
-		fmt.Println("2. Kembali")
-		fmt.Println("3. Menu Utama")
-		fmt.Printf("Masukan dana yang akan dicairkan : Rp.")
-		fmt.Scan(&dana_cair)
+            fmt.Scan(&pilih)
 
-		if dana_cair == 2 {
+            if pilih == 1 {
+                // 4. Proses pencairan
+                porto.Saham -= lembarCair
+                aset.Saham  -= danaCair
+                fmt.Printf("\nDana Rp.%.0f berhasil dicairkan. Sisa lembar: %.4f\n\n", danaCair, porto.Saham)
 
-			opsi_investasi("Saham")
+                // 5. Setelah pencairan
+                fmt.Println("1. Kembali ke Saham")
+                fmt.Println("2. Menu Utama")
+                fmt.Print("Pilihan: ")
+                fmt.Scan(&pilih)
+                if pilih == 1 {
+                    opsi_investasi("Saham")
+                }
+                return
 
-		} else if dana_cair == 3 {
+            } else if pilih == 2 {
+                // Kembali ke pencarian
 
-			return
+            } else if pilih == 3 {
+                return
 
-		} else if dana_cair < 0 {
+            } else {
+                fmt.Println("Pilihan tidak valid.")
+            }
+        }
 
-			fmt.Println("Dana tidak bisa negatif !")
-
-		} else {
-
-			if dana_cair > aset.Saham {
-
-				fmt.Println("Dana kurang !")
-
-			} else {
-
-				pencairan_aset = convert_aset(dana_cair, invest.Saham[iterasi.Saham])
-
-				fmt.Println("Anda akan mencairkan sebanyak Rp.", dana_cair)
-				fmt.Println(pencairan_aset, " Lembar saham akan dikurangi dari rekening Anda")
-				fmt.Println("Anda yakin ? (ketik 1)")
-				fmt.Println("1. Ya")
-				fmt.Println("2. Kembali")
-				fmt.Println("3. Menu Utama")
-
-				fmt.Print("Pilihan : ")
-				fmt.Scan(&konfirmasi)
-
-				switch konfirmasi {
-
-				case 1:
-					fmt.Println("Selamat dana sebesar Rp.", dana_cair, " akan masuk ke rekening Anda")
-					aset.Saham = aset.Saham - dana_cair
-					porto.Saham = porto.Saham - pencairan_aset
-					status = true
-
-					fmt.Println("1. Kembali")
-					fmt.Println("2. Menu Utama")
-					fmt.Print("Pilihan : ")					
-					fmt.Scan(&setelah)
-
-					if setelah == 1 {
-						opsi_investasi("Saham")
-					} else if setelah == 2 {
-						return
-					}
-
-				case 2:
-					opsi_investasi("Saham")
-				case 3:
-					menu_invest()
-				}
-
-			}
-
-		}
-	}
-
+    }
 }
+
 
 
 func hapus_invest_new(jenisDari string) {
@@ -854,7 +834,7 @@ func riwayat_investasi(jenis string) {
 			fmt.Println("Tidak ada riwayat investasi", jenis)
 		} else {
 			fmt.Printf("%-10s | %-25s | %-25s\n", "No", "Modal", "Harga")
-			for i := 0; i < iterasi.Saham; i++ {
+			for i := 0; i <= iterasi.Saham; i++ {
 				fmt.Printf("%-10d | Rp.%-22.2f | Rp.%-22.2f\n", i+1, modal.Saham[i], invest.Saham[i])
 			}
 		}
@@ -863,7 +843,7 @@ func riwayat_investasi(jenis string) {
 			fmt.Println("Tidak ada riwayat investasi", jenis)
 		} else {
 			fmt.Printf("%-10s | %-25s | %-25s\n", "No", "Modal", "Harga")
-			for i := 0; i < iterasi.Reksa; i++ {
+			for i := 0; i <= iterasi.Reksa; i++ {
 				fmt.Printf("%-10d | Rp.%-22.2f | Rp.%-22.2f\n", i+1, modal.Reksa[i], invest.Reksa[i])
 			}
 		}
@@ -872,7 +852,7 @@ func riwayat_investasi(jenis string) {
 			fmt.Println("Tidak ada riwayat investasi", jenis)
 		} else {
 			fmt.Printf("%-10s | %-25s | %-25s\n", "No", "Modal", "Harga")
-			for i := 0; i < iterasi.Obligasi; i++ {
+			for i := 0; i <= iterasi.Obligasi; i++ {
 				fmt.Printf("%-10d | Rp.%-22.2f | Rp.%-22.2f\n", i+1, modal.Obligasi[i], invest.Obligasi[i])
 			}
 		}
