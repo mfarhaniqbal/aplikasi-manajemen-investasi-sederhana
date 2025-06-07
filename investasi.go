@@ -11,11 +11,13 @@ import "fmt"
 var firstname, lastname string
 var minggu int = 1
 
+const NMAX int = 100
+
 type investasi struct {
 	jenis    [3]string
-	Saham    [100]float64
-	Reksa    [100]float64
-	Obligasi [100]float64
+	Saham    [NMAX]float64
+	Reksa    [NMAX]float64
+	Obligasi [NMAX]float64
 }
 
 var invest = investasi{
@@ -23,9 +25,9 @@ var invest = investasi{
 }
 
 type modaluser struct {
-	Saham    [100]float64
-	Reksa    [100]float64
-	Obligasi [100]float64
+	Saham    [NMAX]float64
+	Reksa    [NMAX]float64
+	Obligasi [NMAX]float64
 }
 
 var modal modaluser
@@ -277,7 +279,7 @@ func ubahInvest(jenisDari string) {
     var hargaDari float64
     var portoDari *float64
     var asetDari *float64
-    var modalDari *[100]float64
+    var modalDari *[NMAX]float64
     var idxDari int
 
     switch jenisDari {
@@ -353,7 +355,7 @@ func ubahInvest(jenisDari string) {
     // 6. Siapkan konteks jenis tujuan (pointer ke porto, aset, modal, idxKe)
     var portoKe *float64
     var asetKe  *float64
-    var modalKe *[100]float64
+    var modalKe *[NMAX]float64
     var idxKe   int
 
     switch toJenis {
