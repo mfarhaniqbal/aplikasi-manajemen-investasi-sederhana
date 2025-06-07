@@ -57,6 +57,12 @@ type iter struct {
 
 var iterasi iter
 
+type summary struct {
+    Jenis      string
+    Nilai      float64  // total nilai aset
+    Persentase float64  // profit (%) 
+}
+
 func Menu1() {
 	fmt.Println("=================")
 	fmt.Println(" Trading.com ")
@@ -711,63 +717,127 @@ func hapus_invest(jenisDari string) {
 }
 
 func profil() {
-	var status int
 	var jenis string
-	fmt.Println("===================")
-	fmt.Println("====Profil Diri====")
-	fmt.Println(" ")
-	fmt.Print("Nama: ")
-	fmt.Println(firstname, lastname)
-	fmt.Println("Ringkasan Aset: ")
-	fmt.Println("")
-	for i := 0; i < 3; i++ {
-		jenis = invest.jenis[i]
-		fmt.Println("===", jenis, "===")
-		fmt.Println("Modal", jenis, "Anda Rp. ", float64(hitung_modal(jenis)))
-		switch jenis {
-		case "Saham":
-			if iterasi.Saham > 0 {
-				fmt.Printf("Aset: %.4f lembar\n", porto.Saham)
-				// fmt.Println("Nilai Aset: ", float64(porto.Saham*invest.Saham[iterasi.Saham]))
-				fmt.Printf("Nilai Aset Rp.: %.2f\n", aset.Saham)
-				// fmt.Println("Profit: ", float64(porto.Saham*invest.Saham[iterasi.Saham])-float64(hitung_modal(jenis)))
-				fmt.Printf("Profit: %.2f\n", aset.Saham - float64(hitung_modal(jenis)))
-			} else {
-				fmt.Println("Belum memiliki aset saham")
-			}
-		case "Reksa":
-			if iterasi.Reksa > 0 {
-				fmt.Printf("Aset: %.4f unit\n", porto.Reksa)
-				// fmt.Println("Nilai Aset: ", float64(porto.Reksa*invest.Reksa[iterasi.Reksa]))
-				fmt.Printf("Nilai Aset Rp.: %.2f\n", aset.Reksa)
-				// fmt.Println("Profit: ", float64(porto.Reksa*invest.Reksa[iterasi.Reksa])-float64(hitung_modal(jenis)))
-				fmt.Printf("Profit: %.2f\n", aset.Reksa - float64(hitung_modal(jenis)))
-			} else {
-				fmt.Println("Belum memiliki aset reksadana")
-			}
-		case "Obligasi":
-			if iterasi.Obligasi > 0 {
-				fmt.Printf("Aset: %.4f unit\n", porto.Obligasi)
-				// fmt.Println("Nilai Aset: ", float64(porto.Obligasi*invest.Obligasi[iterasi.Obligasi]))
-				fmt.Printf("Nilai Aset Rp.: %.2f\n", aset.Obligasi)
-				// fmt.Println("Profit: ", float64(porto.Obligasi*invest.Obligasi[iterasi.Obligasi])-float64(hitung_modal(jenis)))
-				fmt.Printf("Profit: %.2f\n", aset.Obligasi - float64(hitung_modal(jenis)))
-			} else {
-				fmt.Println("Belum memiliki aset obligasi")
-			}
+	var modaltotal, pct float64
+	var i, maxIdx, j int
 
-		}
-		fmt.Println("")
-	}
-	fmt.Print("Kembali ke homepage? (ketik 1) ")
-	fmt.Scan(&status)
-	if status == 1 {
-		return
-	} else {
-		fmt.Println("Inputan Tidak Valid, Silahkan ulangi lagi")
-		fmt.Scan(&status)
-	}
+    fmt.Println("===================")
+    fmt.Println("==== Profil Diri ====")
+    fmt.Printf("Nama       : %s %s\n\n", firstname, lastname)
+    fmt.Println("=== Ringkasan Aset ===")
+
+    for i = 0; i < 3; i++ {
+        jenis = invest.jenis[i]
+        modaltotal = float64(hitung_modal(jenis))
+        fmt.Printf("\n--- %s ---\n", jenis)
+        fmt.Printf("Modal       : Rp%.0f\n", modaltotal)
+
+        switch jenis {
+        case "Saham":
+            if iterasi.Saham > 0 {
+                fmt.Printf("Aset        : %.4f lembar\n", porto.Saham)
+                fmt.Printf("Nilai Aset  : Rp%.2f\n", aset.Saham)
+                fmt.Printf("Profit      : Rp%.2f\n", aset.Saham - modaltotal)
+            } else {
+                fmt.Println("Belum memiliki aset saham")
+            }
+        case "Reksa":
+            if iterasi.Reksa > 0 {
+                fmt.Printf("Aset        : %.4f unit\n", porto.Reksa)
+                fmt.Printf("Nilai Aset  : Rp%.2f\n", aset.Reksa)
+                fmt.Printf("Profit      : Rp%.2f\n", aset.Reksa - modaltotal)
+            } else {
+                fmt.Println("Belum memiliki aset reksa dana")
+            }
+        case "Obligasi":
+            if iterasi.Obligasi > 0 {
+                fmt.Printf("Aset        : %.4f unit\n", porto.Obligasi)
+                fmt.Printf("Nilai Aset  : Rp%.2f\n", aset.Obligasi)
+                fmt.Printf("Profit      : Rp%.2f\n", aset.Obligasi - modaltotal)
+            } else {
+                fmt.Println("Belum memiliki aset obligasi")
+            }
+        }
+    }
+
+    // Struktur data tetap statis
+    type summary struct {
+        Jenis      string
+        Nilai      float64
+        Persentase float64
+    }
+    var list [3]summary
+    for i = 0; i < 3; i++ {
+        jenis := invest.jenis[i]
+        var nilai, modaltotal float64
+        switch jenis {
+        case "Saham":
+            nilai = aset.Saham
+            modaltotal = float64(hitung_modal("Saham"))
+        case "Reksa":
+            nilai = aset.Reksa
+            modaltotal = float64(hitung_modal("Reksa"))
+        case "Obligasi":
+            nilai = aset.Obligasi
+            modaltotal = float64(hitung_modal("Obligasi"))
+        }
+        pct = 0.0
+        if modaltotal > 0 {
+            pct = (nilai - modaltotal) / modaltotal * 100
+        }
+        list[i] = summary{Jenis: jenis, Nilai: nilai, Persentase: pct}
+    }
+
+    // Submenu urutkan descending
+    fmt.Println("\n=== Submenu Urutkan Aset ===")
+    fmt.Println("1. Urutkan berdasarkan Nilai Aset")
+    fmt.Println("2. Urutkan berdasarkan Persentase Profit")
+    fmt.Println("3. Kembali")
+    fmt.Print("Pilih: ")
+    var pilih int
+    fmt.Scan(&pilih)
+
+    if pilih == 1 {
+        // Selection sort descending by Nilai
+        for i = 0; i < 2; i++ {
+            maxIdx = i
+            for j = i + 1; j < 3; j++ {
+                if list[j].Nilai > list[maxIdx].Nilai {
+                    maxIdx = j
+                }
+            }
+            list[i], list[maxIdx] = list[maxIdx], list[i]
+        }
+        fmt.Println("\n-- Hasil Urutkan dari Nilai Aset --")
+    } else if pilih == 2 {
+        // Insertion sort descending by Persentase
+        for i = 1; i < 3; i++ {
+            key := list[i]
+            j = i - 1
+            for j >= 0 && list[j].Persentase < key.Persentase {
+                list[j+1] = list[j]
+                j--
+            }
+            list[j+1] = key
+        }
+        fmt.Println("\n-- Hasil Urutkan dari Persentase Profit --")
+    } else {
+        return
+    }
+
+    // Cetak hasil sorting
+    for i = 0; i < 3; i++ {
+        fmt.Printf("%-8s | Nilai: Rp%.2f | Profit: %.2f%%\n",
+            list[i].Jenis, list[i].Nilai, list[i].Persentase)
+    }
+
+    fmt.Println("\nTekan Enter untuk kembali...")
+    fmt.Scanln()
+    fmt.Scanln()
 }
+
+
+
 func riwayat_investasi(jenis string) {
 	var status int
 	fmt.Println("==================")
