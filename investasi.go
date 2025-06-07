@@ -233,11 +233,14 @@ func opsi_investasi(jenis string) {
         }
     case 3:
         if jenis == "Saham" {
-          hapus_invest()       
+          //hapus_invest()       
+          hapus_invest_new("Saham")
         } else if jenis == "Reksa" {
-          hapus_invest_reksa()
+          // hapus_invest_reksa()
+          hapus_invest_new("Reksa")
         } else if jenis == "Obligasi" {
-          hapus_invest_obligasi()       
+          // hapus_invest_obligasi()
+          hapus_invest_new("Obligasi") 
         }
 
 
@@ -506,8 +509,9 @@ func tambah_invest(jenisDari string) {
 }
 
 func hapus_invest() {
-    var danaCair float64
+    var danacair float64
     var pilih int
+    var asetcair float64
 
     aset.Saham = hitung_aset(porto.Saham, invest.Saham[iterasi.Saham])
     fmt.Println("================")
@@ -521,21 +525,21 @@ func hapus_invest() {
         fmt.Println("  (2. Kembali, 3. Menu Utama)")
         fmt.Print("Rp. ")
 
-        fmt.Scan(&danaCair)
+        fmt.Scan(&danacair)
 
-        if danaCair == 2 {
+        if danacair == 2 {
             opsi_investasi("Saham")
             return
-        } else if danaCair == 3 {
+        } else if danacair == 3 {
             return
-        } else if danaCair < 0 {
+        } else if danacair < 0 {
             fmt.Println("Dana tidak bisa negatif!")
-        } else if danaCair > aset.Saham {
+        } else if danacair > aset.Saham {
             fmt.Println("Dana melebihi nilai aset!")
         } else {
             // 3. Konfirmasi pencairan
-            lembarCair := convert_aset(danaCair, invest.Saham[iterasi.Saham])
-            fmt.Printf("\nAnda akan mencairkan Rp%.0f → %.4f lembar\n", danaCair, lembarCair)
+            asetcair = convert_aset(danacair, invest.Saham[iterasi.Saham])
+            fmt.Printf("\nAnda akan mencairkan Rp%.0f → %.4f lembar\n", danacair, asetcair)
             fmt.Println("Anda yakin?")
             fmt.Println("1. Ya")
             fmt.Println("2. Kembali")
@@ -545,10 +549,10 @@ func hapus_invest() {
             fmt.Scan(&pilih)
 
             if pilih == 1 {
-                // 4. Proses pencairan
-                porto.Saham -= lembarCair
-                aset.Saham  -= danaCair
-                fmt.Printf("\nDana Rp.%.0f berhasil dicairkan. Sisa lembar: %.4f\n\n", danaCair, porto.Saham)
+
+                porto.Saham -= asetcair
+                aset.Saham  -= danacair
+                fmt.Printf("\nDana Rp.%.0f berhasil dicairkan. Sisa lembar: %.4f\n\n", danacair, porto.Saham)
 
                 // 5. Setelah pencairan
                 fmt.Println("1. Kembali ke Saham")
@@ -577,18 +581,210 @@ func hapus_invest() {
 
 
 func hapus_invest_new(jenisDari string) {
-
-
+    var danacair float64
+    var pilih int
+    var asetcair float64
 
     switch jenisDari {
     case invest.jenis[0]:
+	    aset.Saham = hitung_aset(porto.Saham, invest.Saham[iterasi.Saham])
+	    fmt.Println("================")
+	    fmt.Printf("Harga Saham       : Rp%.0f\n", invest.Saham[iterasi.Saham])
+	    fmt.Printf("Aset Anda Saat Ini: %.4f Lembar\n", porto.Saham)
+	    fmt.Printf("Nilai Aset        : Rp%.0f\n\n", aset.Saham)
 
+	    for {
+
+	        fmt.Println("Masukkan dana yang akan dicairkan:")
+	        fmt.Println("  (2. Kembali, 3. Menu Utama)")
+	        fmt.Print("Rp. ")
+
+	        fmt.Scan(&danacair)
+
+	        if danacair == 2 {
+	            opsi_investasi("Saham")
+	            return
+	        } else if danacair == 3 {
+	            return
+	        } else if danacair < 0 {
+	            fmt.Println("Dana tidak bisa negatif!")
+	        } else if danacair > aset.Saham {
+	            fmt.Println("Dana melebihi nilai aset!")
+	        } else {
+	            // 3. Konfirmasi pencairan
+	            asetcair = convert_aset(danacair, invest.Saham[iterasi.Saham])
+	            fmt.Printf("\nAnda akan mencairkan Rp%.0f → %.4f lembar\n", danacair, asetcair)
+	            fmt.Println("Anda yakin?")
+	            fmt.Println("1. Ya")
+	            fmt.Println("2. Kembali")
+	            fmt.Println("3. Menu Utama")
+	            fmt.Print("Pilihan: ")
+
+	            fmt.Scan(&pilih)
+
+	            if pilih == 1 {
+
+	                porto.Saham -= asetcair
+	                aset.Saham  -= danacair
+	                fmt.Printf("\nDana Rp.%.0f berhasil dicairkan. Sisa lembar: %.4f\n\n", danacair, porto.Saham)
+
+	                // 5. Setelah pencairan
+	                fmt.Println("1. Kembali ke Saham")
+	                fmt.Println("2. Menu Utama")
+	                fmt.Print("Pilihan: ")
+	                fmt.Scan(&pilih)
+	                if pilih == 1 {
+	                    opsi_investasi("Saham")
+	                }
+	                return
+
+	            } else if pilih == 2 {
+	                // Kembali ke pencarian
+
+	            } else if pilih == 3 {
+	                return
+
+	            } else {
+	                fmt.Println("Pilihan tidak valid.")
+	            }
+	        }
+
+	    }
 
 
 
     case invest.jenis[1]:
+	    aset.Reksa = hitung_aset(porto.Reksa, invest.Reksa[iterasi.Reksa])
+	    fmt.Println("================")
+	    fmt.Printf("Harga Reksa       : Rp%.0f\n", invest.Reksa[iterasi.Reksa])
+	    fmt.Printf("Aset Anda Saat Ini: %.4f Unit\n", porto.Reksa)
+	    fmt.Printf("Nilai Aset        : Rp%.0f\n\n", aset.Reksa)
+
+	    for {
+
+	        fmt.Println("Masukkan dana yang akan dicairkan:")
+	        fmt.Println("  (2. Kembali, 3. Menu Utama)")
+	        fmt.Print("Rp. ")
+
+	        fmt.Scan(&danacair)
+
+	        if danacair == 2 {
+	            opsi_investasi("Reksa")
+	            return
+	        } else if danacair == 3 {
+	            return
+	        } else if danacair < 0 {
+	            fmt.Println("Dana tidak bisa negatif!")
+
+	        } else if danacair > aset.Reksa {
+	            fmt.Println("Dana melebihi nilai aset!")
+
+	        } else {
+
+	            asetcair = convert_aset(danacair, invest.Reksa[iterasi.Reksa])
+	            fmt.Printf("\nAnda akan mencairkan Rp%.0f → %.4f unit\n", danacair, asetcair)
+	            fmt.Println("Anda yakin?")
+	            fmt.Println("1. Ya")
+	            fmt.Println("2. Kembali")
+	            fmt.Println("3. Menu Utama")
+	            fmt.Print("Pilihan: ")
+
+	            fmt.Scan(&pilih)
+
+	            if pilih == 1 {
+
+	                porto.Reksa -= asetcair
+	                aset.Reksa  -= danacair
+	                fmt.Printf("\nDana Rp.%.0f berhasil dicairkan. Sisa Unit: %.4f\n\n", danacair, porto.Reksa)
+
+	                fmt.Println("1. Kembali ke Reksa")
+	                fmt.Println("2. Menu Utama")
+	                fmt.Print("Pilihan: ")
+	                fmt.Scan(&pilih)
+	                if pilih == 1 {
+	                    opsi_investasi("Reksa")
+	                }
+	                return
+
+	            } else if pilih == 2 {
+	                // Kembali ke pencarian
+
+	            } else if pilih == 3 {
+	                return
+
+	            } else {
+	                fmt.Println("Pilihan tidak valid.")
+	            }
+	        }
+
+	    }
+
 
     case invest.jenis[2]:
+	    aset.Obligasi = hitung_aset(porto.Obligasi, invest.Obligasi[iterasi.Obligasi])
+	    fmt.Println("================")
+	    fmt.Printf("Harga Obligasi       : Rp%.0f\n", invest.Obligasi[iterasi.Obligasi])
+	    fmt.Printf("Aset Anda Saat Ini: %.4f Lembar\n", porto.Obligasi)
+	    fmt.Printf("Nilai Aset        : Rp%.0f\n\n", aset.Obligasi)
+
+	    for {
+
+	        fmt.Println("Masukkan dana yang akan dicairkan:")
+	        fmt.Println("  (2. Kembali, 3. Menu Utama)")
+	        fmt.Print("Rp. ")
+
+	        fmt.Scan(&danacair)
+
+	        if danacair == 2 {
+	            opsi_investasi("Obligasi")
+	            return
+	        } else if danacair == 3 {
+	            return
+	        } else if danacair < 0 {
+	            fmt.Println("Dana tidak bisa negatif!")
+	        } else if danacair > aset.Obligasi {
+	            fmt.Println("Dana melebihi nilai aset!")
+	        } else {
+	            // 3. Konfirmasi pencairan
+	            asetcair = convert_aset(danacair, invest.Obligasi[iterasi.Obligasi])
+	            fmt.Printf("\nAnda akan mencairkan Rp%.0f → %.4f lembar\n", danacair, asetcair)
+	            fmt.Println("Anda yakin?")
+	            fmt.Println("1. Ya")
+	            fmt.Println("2. Kembali")
+	            fmt.Println("3. Menu Utama")
+	            fmt.Print("Pilihan: ")
+
+	            fmt.Scan(&pilih)
+
+	            if pilih == 1 {
+
+	                porto.Obligasi -= asetcair
+	                aset.Obligasi  -= danacair
+	                fmt.Printf("\nDana Rp.%.0f berhasil dicairkan. Sisa unit: %.4f\n\n", danacair, porto.Obligasi)
+
+	                // 5. Setelah pencairan
+	                fmt.Println("1. Kembali ke Obligasi")
+	                fmt.Println("2. Menu Utama")
+	                fmt.Print("Pilihan: ")
+	                fmt.Scan(&pilih)
+	                if pilih == 1 {
+	                    opsi_investasi("Obligasi")
+	                }
+	                return
+
+	            } else if pilih == 2 {
+	                // Kembali ke pencarian
+
+	            } else if pilih == 3 {
+	                return
+
+	            } else {
+	                fmt.Println("Pilihan tidak valid.")
+	            }
+	        }
+
+	    }
+
 
     default:
     	fmt.Println("Jenis aset tidak ditemukan.")
@@ -789,24 +985,26 @@ func profil() {
 		case "Saham":
 			if iterasi.Saham > 0 {
 				fmt.Println("Aset: ", porto.Saham, "lembar")
-				fmt.Println("Nilai Aset: ", float64(porto.Saham*invest.Saham[iterasi.Saham-1]))
-				fmt.Println("Profit: ", float64(porto.Saham*invest.Saham[iterasi.Saham-1])-float64(hitung_modal(jenis)))
+				fmt.Println("Nilai Aset: ", float64(porto.Saham*invest.Saham[iterasi.Saham]))
+				fmt.Println("Profit: ", float64(porto.Saham*invest.Saham[iterasi.Saham])-float64(hitung_modal(jenis)))
 			} else {
 				fmt.Println("Belum memiliki aset saham")
 			}
 		case "Reksa":
 			if iterasi.Reksa > 0 {
-				fmt.Println("Aset: ", porto.Reksa, "lembar")
-				fmt.Println("Nilai Aset: ", float64(porto.Reksa*invest.Reksa[iterasi.Reksa-1]))
-				fmt.Println("Profit: ", float64(porto.Reksa*invest.Reksa[iterasi.Reksa-1])-float64(hitung_modal(jenis)))
+				fmt.Println("Aset: ", porto.Reksa, "unit")
+				fmt.Println("Nilai Aset: ", float64(porto.Reksa*invest.Reksa[iterasi.Reksa]))
+				// fmt.Println("Nilai Aset Rp.: ", aset.Reksa)
+				fmt.Println("Profit: ", float64(porto.Reksa*invest.Reksa[iterasi.Reksa])-float64(hitung_modal(jenis)))
+				// fmt.Println("Profit: ", aset.Reksa - float64(hitung_modal(jenis)))
 			} else {
 				fmt.Println("Belum memiliki aset reksadana")
 			}
 		case "Obligasi":
 			if iterasi.Obligasi > 0 {
-				fmt.Println("Aset: ", porto.Obligasi, "lembar")
-				fmt.Println("Nilai Aset: ", float64(porto.Obligasi*invest.Obligasi[iterasi.Obligasi-1]))
-				fmt.Println("Profit: ", float64(porto.Obligasi*invest.Obligasi[iterasi.Obligasi-1])-float64(hitung_modal(jenis)))
+				fmt.Println("Aset: ", porto.Obligasi, "unit")
+				fmt.Println("Nilai Aset: ", float64(porto.Obligasi*invest.Obligasi[iterasi.Obligasi]))
+				fmt.Println("Profit: ", float64(porto.Obligasi*invest.Obligasi[iterasi.Obligasi])-float64(hitung_modal(jenis)))
 			} else {
 				fmt.Println("Belum memiliki aset obligasi")
 			}
