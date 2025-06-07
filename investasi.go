@@ -36,7 +36,8 @@ type modaluser struct {
 var modal modaluser
 
 type portofoliouser struct {
-	// PORTOFOLIO USER (UNTUNG RUGI)
+
+	// ASET USER DALAM BENTUR LEMBAR/UNIT	
 	Saham    float64
 	Reksa    float64
 	Obligasi float64
@@ -45,7 +46,7 @@ type portofoliouser struct {
 var porto portofoliouser
 
 type asetuser struct {
-	// ASET USER DALAM BENTUR LEMBAR/UNIT
+	// PORTOFOLIO USER (UNTUNG RUGI)
 	Saham    float64
 	Reksa    float64
 	Obligasi float64
@@ -516,11 +517,10 @@ func hapus_invest() {
 	aset.Saham = hitung_aset(porto.Saham, invest.Saham[iterasi.Saham])
 
 	status = false
-
+	fmt.Println("================")
 	fmt.Println("Harga Saham : ", invest.Saham[iterasi.Saham])
-	fmt.Println("Asset Anda Saat ini : ")
-	fmt.Println(porto.Saham, "Lembar")
-	fmt.Println("Nilai Aset", aset.Saham)
+	fmt.Println("Asset Anda Saat ini : ", porto.Saham, "Lembar")
+	fmt.Println("Nilai Aset Rp.", aset.Saham)
 
 	// fmt.Scan(&dana_cair)
 
@@ -560,6 +560,7 @@ func hapus_invest() {
 				fmt.Println("2. Kembali")
 				fmt.Println("3. Menu Utama")
 
+				fmt.Print("Pilihan : ")
 				fmt.Scan(&konfirmasi)
 
 				switch konfirmasi {
@@ -572,6 +573,7 @@ func hapus_invest() {
 
 					fmt.Println("1. Kembali")
 					fmt.Println("2. Menu Utama")
+					fmt.Print("Pilihan : ")					
 					fmt.Scan(&setelah)
 
 					if setelah == 1 {
@@ -593,6 +595,30 @@ func hapus_invest() {
 
 }
 
+
+func hapus_invest_new(jenisDari string) {
+
+
+
+    switch jenisDari {
+    case invest.jenis[0]:
+
+
+
+
+    case invest.jenis[1]:
+
+    case invest.jenis[2]:
+
+    default:
+    	fmt.Println("Jenis aset tidak ditemukan.")
+    	return
+    }	
+
+
+}
+
+
 func hapus_invest_reksa() {
 
 	var pencairan_aset float64
@@ -603,11 +629,10 @@ func hapus_invest_reksa() {
 	aset.Reksa = hitung_aset(porto.Reksa, invest.Reksa[iterasi.Reksa])
 
 	status = false
-
+	fmt.Println("================")
 	fmt.Println("Harga Reksa : ", invest.Reksa[iterasi.Reksa])
-	fmt.Println("Asset Anda Saat ini : ")
-	fmt.Println(porto.Reksa, "Unit")
-	fmt.Println("Nilai Aset", aset.Reksa)
+	fmt.Println("Asset Anda Saat ini : ", porto.Reksa, "Unit")
+	fmt.Println("Nilai Aset Rp.", aset.Reksa)
 
 	// fmt.Scan(&dana_cair)
 
@@ -690,11 +715,10 @@ func hapus_invest_obligasi() {
 	aset.Obligasi = hitung_aset(porto.Obligasi, invest.Obligasi[iterasi.Obligasi])
 
 	status = false
-
+	fmt.Println("================")
 	fmt.Println("Harga Obligasi : ", invest.Obligasi[iterasi.Obligasi])
-	fmt.Println("Asset Anda Saat ini : ")
-	fmt.Println(porto.Obligasi, "Unit")
-	fmt.Println("Nilai Aset", aset.Obligasi)
+	fmt.Println("Asset Anda Saat ini : ", porto.Obligasi, "Unit")
+	fmt.Println("Nilai Aset Rp.", aset.Obligasi)
 
 	// fmt.Scan(&dana_cair)
 
