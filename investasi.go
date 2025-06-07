@@ -119,19 +119,19 @@ func menu_invest() {
 
 	case 1:
 		fmt.Println("\nInvestasi Saham")
-		fmt.Print("Masukkan harga pasar", iterasi.Saham, "Saham : Rp.")
+		fmt.Print("Masukkan harga pasar Saham : Rp.")
 		fmt.Scan(&invest.Saham[iterasi.Saham])
 
 		opsi_investasi("Saham")
 	case 2:
 		fmt.Println("\nInvestasi Reksadana")
-		fmt.Print("Masukkan harga pasar", iterasi.Reksa, "Reksadana : Rp.")
+		fmt.Print("Masukkan harga pasar Reksadana : Rp.")
 		fmt.Scan(&invest.Reksa[iterasi.Reksa])
 
 		opsi_investasi("Reksa")
 	case 3:
 		fmt.Println("\nInvestasi Obligasi")
-		fmt.Print("Masukkan harga pasar", iterasi.Obligasi, "Obligasi : Rp.")
+		fmt.Print("Masukkan harga pasar Obligasi : Rp.")
 		fmt.Scan(&invest.Obligasi[iterasi.Obligasi])
 		opsi_investasi("Obligasi")
 	case 4:
