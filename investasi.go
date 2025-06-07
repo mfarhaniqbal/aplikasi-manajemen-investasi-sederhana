@@ -14,6 +14,7 @@ var minggu int = 1
 const NMAX int = 100
 
 type investasi struct {
+	// HARGA INVESTASI PASAR
 	jenis    [3]string
 	Saham    [NMAX]float64
 	Reksa    [NMAX]float64
@@ -21,10 +22,12 @@ type investasi struct {
 }
 
 var invest = investasi{
+	// JENIS ASET
 	jenis: [3]string{"Saham", "Reksa", "Obligasi"}, //0, 1, 2
 }
 
 type modaluser struct {
+	//  MODAL YANG DIPUNYA USER
 	Saham    [NMAX]float64
 	Reksa    [NMAX]float64
 	Obligasi [NMAX]float64
@@ -33,6 +36,7 @@ type modaluser struct {
 var modal modaluser
 
 type portofoliouser struct {
+	// PORTOFOLIO USER (UNTUNG RUGI)
 	Saham    float64
 	Reksa    float64
 	Obligasi float64
@@ -41,6 +45,7 @@ type portofoliouser struct {
 var porto portofoliouser
 
 type asetuser struct {
+	// ASET USER DALAM BENTUR LEMBAR/UNIT
 	Saham    float64
 	Reksa    float64
 	Obligasi float64
@@ -49,6 +54,7 @@ type asetuser struct {
 var aset asetuser
 
 type iter struct {
+	// ITERASI INPUTAN HARGA PASAR KE X
 	Saham    int
 	Reksa    int
 	Obligasi int
@@ -122,52 +128,26 @@ func menu_invest() {
 		fmt.Print("Saham : Rp.")
 		fmt.Scan(&invest.Saham[iterasi.Saham])
 
-		invest_saham("Saham")
+		opsi_investasi("Saham")
 	case 2:
 		fmt.Println("Investasi Reksadana")
 		fmt.Println("Masukkan harga pasar ", iterasi.Reksa)
 		fmt.Print("Reksadana : Rp.")
 		fmt.Scan(&invest.Reksa[iterasi.Reksa])
 
-		invest_saham("Reksa")
+		opsi_investasi("Reksa")
 	case 3:
 		fmt.Println("Investasi Obligasi")
 		fmt.Println("Masukkan harga pasar ", iterasi.Obligasi)
-		fmt.Print("Reksadana : Rp.")
+		fmt.Print("Obligasi : Rp.")
 		fmt.Scan(&invest.Obligasi[iterasi.Obligasi])
-		invest_saham("Obligasi")
+		opsi_investasi("Obligasi")
 	case 4:
 		return
 
 	}
 
 }
-
-// func hitung_aset(jenis string) float64 {
-
-//  /*
-//     Menghitung total aset yang dipunyai user
-
-//  */
-
-//  var total float64
-//  var i int
-//  for i = 0; i < minggu; i++ {
-
-//    switch jenis {
-
-//    case "Saham":
-//      total = total + porto.Saham
-//    case "Reksa":
-//      total = total + porto.Reksa
-//    case "Obligasi":
-//      total = total + porto.Obligasi
-//    }
-//  }
-
-//  return total
-
-// }
 
 func hitung_modal(jenis string) float64 {
 	var total float64
@@ -218,7 +198,7 @@ func hitung_aset(porto, harga float64) float64 {
 
 }
 
-func invest_saham(jenis string) {
+func opsi_investasi(jenis string) {
 /*
   Fungsi untuk menambah aset yang dipilih, saat ini baru Saham yang bisa dijalankan
 */
@@ -239,11 +219,11 @@ func invest_saham(jenis string) {
     
     case 1:
         if jenis == "Saham" {
-          tambah_invest()          
+          tambah_invest("Saham")          
         } else if jenis == "Reksa" {
-          tambah_invest_reksa()
+          tambah_invest("Reksa")
         } else if jenis == "Obligasi" {
-          tambah_invest_obligasi()     
+          tambah_invest("Obligasi")
         }
     case 2:
         if jenis == "Saham" {
@@ -388,58 +368,141 @@ func ubahInvest(jenisDari string) {
     fmt.Printf("- Lembar %s baru : %.2f → total: %.2f\n", toJenis, lembarBaru, *portoKe)
 }
 
-func tambah_invest() {
+// template switch case
 
-	var jumlah_lembar float64
-	// var jumlah_aset float64
-	var jenis string
-	var opsi_menu int
-	var modal_user float64
+    // switch jenisDari {
+    // case "Saham":
 
-	jenis = invest.jenis[0]
-	fmt.Println("================")
-	fmt.Println("Modal Anda", hitung_modal(jenis))
-	fmt.Println("Aset Anda", porto.Saham, "Lembar")
-	fmt.Println("================")
+    // case "Reksa":
 
-	fmt.Println("Harga per lembar : Rp.", invest.Saham[iterasi.Saham])
-	fmt.Printf("Dana Investasi : Rp.")
-	fmt.Scan(&modal_user)
+    // case "Obligasi":
 
-	jumlah_lembar = convert_aset(modal_user, invest.Saham[iterasi.Saham])
+    // default:
+    // 	fmt.Println("Jenis aset tidak ditemukan.")
+    // 	return
+    // }	
 
-	porto.Saham = porto.Saham + jumlah_lembar
-	modal.Saham[iterasi.Saham] = modal.Saham[iterasi.Saham] + modal_user
-	fmt.Println("Lembar saham yang didapatkan :", jumlah_lembar)
 
-	fmt.Println("Total lembar", porto.Saham)
+func tambah_invest(jenisDari string) {
+	var jumlah_aset_dibeli float64
+    var opsi_menu int
+    var modal_user float64
 
-	// jumlah_aset = hitung_aset(jumlah_lembar, invest.Saham[minggu-1])
+    switch jenisDari {
+    case invest.jenis[0]:
+    	fmt.Println("================")
+    	fmt.Println("Modal Andas Rp.", hitung_modal(invest.jenis[0]))
+    	fmt.Println("Aset Anda", porto.Saham, "Lembar")
+    	fmt.Println("================")
 
-	// aset.Saham = aset.Saham + jumlah_aset
+    	fmt.Println("Harga per lembar : Rp.", invest.Saham[iterasi.Saham])
+    	fmt.Printf("Dana Investasi : Rp.")
+    	fmt.Scan(&modal_user)
 
-	aset.Saham = hitung_aset(porto.Saham, invest.Saham[iterasi.Saham])
+    	jumlah_aset_dibeli = convert_aset(modal_user, invest.Saham[iterasi.Saham])
+    	porto.Saham = porto.Saham + jumlah_aset_dibeli
+    	modal.Saham[iterasi.Saham] = modal.Saham[iterasi.Saham] + modal_user
 
-	fmt.Println("Total Nilai Aset", aset.Saham)
-	// fmt.Println("Modal yang telah dikeluarkan : ", hitung_modal(modal_total))
+    	fmt.Println("Lembar saham yang didapatkan :", jumlah_aset_dibeli)
+    	fmt.Println("Total lembar", porto.Saham)
 
-	fmt.Println("================")
-	fmt.Println("1. Kembali")
-	fmt.Println("2. Menu Utama")
-	fmt.Printf("Pilih Menu : ")
+    	aset.Saham = hitung_aset(porto.Saham, invest.Saham[iterasi.Saham])
+     	fmt.Println("Total Nilai Aset", aset.Saham)    	
 
-	fmt.Scan(&opsi_menu)
-	switch opsi_menu {
+	    fmt.Println("================")
+	    fmt.Println("1. Kembali")
+	    fmt.Println("2. Menu Utama")
+	    fmt.Printf("Pilih Menu : ")
 
-	// minggu++
+	    fmt.Scan(&opsi_menu)
+	    switch opsi_menu {
 
-	case 1:
-		invest_saham("Saham")
-	case 2:
-		iterasi.Saham = iterasi.Saham + 1
-		return
+	    case 1:
+	        opsi_investasi("Saham")
+	    case 2:
+	        iterasi.Saham = iterasi.Saham + 1
+	        return    	
+	    }
 
-	}
+    case invest.jenis[1]:
+	    fmt.Println("================")
+	    fmt.Println("Modal Andae Rp.", hitung_modal(invest.jenis[1]))
+	    fmt.Println("Aset Anda", porto.Reksa, "Unit")
+	    fmt.Println("================")
+
+	    fmt.Println("Harga per Unit : Rp.", invest.Reksa[iterasi.Reksa])
+	    fmt.Printf("Dana Investasi : Rp.")
+	    fmt.Scan(&modal_user)	    
+
+    	jumlah_aset_dibeli = convert_aset(modal_user, invest.Reksa[iterasi.Reksa])
+	    porto.Reksa = porto.Reksa + jumlah_aset_dibeli
+	    modal.Reksa[iterasi.Reksa] = modal.Reksa[iterasi.Reksa] + modal_user
+
+	    fmt.Println("Unit Reksadana yang didapatkan :", jumlah_aset_dibeli)
+    	fmt.Println("Total Unit", porto.Reksa)
+
+     	aset.Reksa = hitung_aset(porto.Reksa, invest.Reksa[iterasi.Reksa])
+     	fmt.Println("Total Nilai Aset", aset.Reksa)
+
+	    fmt.Println("================")
+	    fmt.Println("1. Kembali")
+	    fmt.Println("2. Menu Utama")
+	    fmt.Printf("Pilih Menu : ")
+
+	    fmt.Scan(&opsi_menu)
+	    switch opsi_menu {
+
+	    case 1:
+	        opsi_investasi("Reksa")
+	    case 2:
+	        iterasi.Reksa = iterasi.Reksa + 1
+	        return
+
+	    }   	
+
+    case invest.jenis[2]:
+	    fmt.Println("================")
+	    fmt.Println("Modal Andaf Rp.", hitung_modal(invest.jenis[2]))
+	    fmt.Println("Aset Anda", porto.Obligasi, "Unit")
+	    fmt.Println("================")
+
+	    fmt.Println("Harga per Unit : Rp.", invest.Obligasi[iterasi.Obligasi])
+	    fmt.Printf("Dana Investasi : Rp.")
+	    fmt.Scan(&modal_user)
+
+	    jumlah_aset_dibeli = convert_aset(modal_user, invest.Obligasi[iterasi.Obligasi])
+	    porto.Obligasi = porto.Obligasi + jumlah_aset_dibeli
+	    modal.Obligasi[iterasi.Obligasi] = modal.Obligasi[iterasi.Obligasi] + modal_user
+
+    	fmt.Println("Unit Obligasi yang didapatkan :", jumlah_aset_dibeli)
+    	fmt.Println("Total Unit", porto.Obligasi)
+
+     	aset.Obligasi = hitung_aset(porto.Obligasi, invest.Obligasi[iterasi.Obligasi])   	
+    	fmt.Println("Total Nilai Aset", aset.Obligasi)
+
+	    fmt.Println("================")
+	    fmt.Println("1. Kembali")
+	    fmt.Println("2. Menu Utama")
+	    fmt.Printf("Pilih Menu : ")
+
+	    fmt.Scan(&opsi_menu)
+	    switch opsi_menu {
+
+	    case 1:
+	        opsi_investasi("Obligasi")
+	    case 2:
+	        iterasi.Obligasi = iterasi.Obligasi + 1
+	        return    	
+
+
+    default:
+    	fmt.Println("Jenis aset tidak ditemukan.")
+    	return
+    }	
+
+
+}
+
 
 }
 
@@ -470,7 +533,7 @@ func hapus_invest() {
 
 		if dana_cair == 2 {
 
-			invest_saham("Saham")
+			opsi_investasi("Saham")
 
 		} else if dana_cair == 3 {
 
@@ -512,13 +575,13 @@ func hapus_invest() {
 					fmt.Scan(&setelah)
 
 					if setelah == 1 {
-						invest_saham("Saham")
+						opsi_investasi("Saham")
 					} else if setelah == 2 {
 						return
 					}
 
 				case 2:
-					invest_saham("Saham")
+					opsi_investasi("Saham")
 				case 3:
 					menu_invest()
 				}
@@ -526,56 +589,6 @@ func hapus_invest() {
 			}
 
 		}
-	}
-
-}
-
-func tambah_invest_reksa() {
-
-	fmt.Println("Berhasil masuk")
-
-	var jumlah_unit float64
-	var jenis string
-	var opsi_menu int
-	var modal_user float64
-
-	jenis = invest.jenis[1]
-	fmt.Println("================")
-	fmt.Println("Modal Anda", hitung_modal(jenis))
-	fmt.Println("Aset Anda", porto.Reksa, "Lembar")
-	fmt.Println("================")
-
-	fmt.Println("Harga per Unit : Rp.", invest.Reksa[iterasi.Reksa])
-	fmt.Printf("Dana Investasi : Rp.")
-	fmt.Scan(&modal_user)
-
-	jumlah_unit = convert_aset(modal_user, invest.Reksa[iterasi.Reksa])
-
-	porto.Reksa = porto.Reksa + jumlah_unit
-	modal.Reksa[iterasi.Reksa] = modal.Reksa[iterasi.Reksa] + modal_user
-	fmt.Println("Unit Obligasi yang didapatkan :", jumlah_unit)
-
-	fmt.Println("Total Unit", porto.Reksa)
-	aset.Reksa = hitung_aset(porto.Reksa, invest.Reksa[iterasi.Reksa])
-
-	fmt.Println("Total Nilai Aset", aset.Reksa)
-
-	fmt.Println("================")
-	fmt.Println("1. Kembali")
-	fmt.Println("2. Menu Utama")
-	fmt.Printf("Pilih Menu : ")
-
-	fmt.Scan(&opsi_menu)
-	switch opsi_menu {
-
-	// minggu++
-
-	case 1:
-		invest_saham("Reksa")
-	case 2:
-		iterasi.Reksa = iterasi.Reksa + 1
-		return
-
 	}
 
 }
@@ -607,7 +620,7 @@ func hapus_invest_reksa() {
 
 		if dana_cair == 2 {
 
-			invest_saham("Reksa")
+			opsi_investasi("Reksa")
 
 		} else if dana_cair == 3 {
 
@@ -649,13 +662,13 @@ func hapus_invest_reksa() {
 					fmt.Scan(&setelah)
 
 					if setelah == 1 {
-						invest_saham("Reksa")
+						opsi_investasi("Reksa")
 					} else if setelah == 2 {
 						return
 					}
 
 				case 2:
-					invest_saham("Reksa")
+					opsi_investasi("Reksa")
 				case 3:
 					menu_invest()
 				}
@@ -663,56 +676,6 @@ func hapus_invest_reksa() {
 			}
 
 		}
-	}
-
-}
-
-func tambah_invest_obligasi() {
-
-	fmt.Println("Berhasil masuk Obligasi")
-
-	var jumlah_unit float64
-	var jenis string
-	var opsi_menu int
-	var modal_user float64
-
-	jenis = invest.jenis[2]
-	fmt.Println("================")
-	fmt.Println("Modal Anda", hitung_modal(jenis))
-	fmt.Println("Aset Anda", porto.Obligasi, "Unit")
-	fmt.Println("================")
-
-	fmt.Println("Harga per Unit : Rp.", invest.Obligasi[iterasi.Obligasi])
-	fmt.Printf("Dana Investasi : Rp.")
-	fmt.Scan(&modal_user)
-
-	jumlah_unit = convert_aset(modal_user, invest.Obligasi[iterasi.Obligasi])
-
-	porto.Obligasi = porto.Obligasi + jumlah_unit
-	modal.Obligasi[iterasi.Obligasi] = modal.Obligasi[iterasi.Obligasi] + modal_user
-	fmt.Println("Unit Obligasi yang didapatkan :", jumlah_unit)
-
-	fmt.Println("Total Unit", porto.Obligasi)
-	aset.Obligasi = hitung_aset(porto.Obligasi, invest.Obligasi[iterasi.Obligasi])
-
-	fmt.Println("Total Nilai Aset", aset.Obligasi)
-
-	fmt.Println("================")
-	fmt.Println("1. Kembali")
-	fmt.Println("2. Menu Utama")
-	fmt.Printf("Pilih Menu : ")
-
-	fmt.Scan(&opsi_menu)
-	switch opsi_menu {
-
-	// minggu++
-
-	case 1:
-		invest_saham("Obligasi")
-	case 2:
-		iterasi.Obligasi = iterasi.Obligasi + 1
-		return
-
 	}
 
 }
@@ -744,7 +707,7 @@ func hapus_invest_obligasi() {
 
 		if dana_cair == 2 {
 
-			invest_saham("Obligasi")
+			opsi_investasi("Obligasi")
 
 		} else if dana_cair == 3 {
 
@@ -786,13 +749,13 @@ func hapus_invest_obligasi() {
 					fmt.Scan(&setelah)
 
 					if setelah == 1 {
-						invest_saham("Obligasi")
+						opsi_investasi("Obligasi")
 					} else if setelah == 2 {
 						return
 					}
 
 				case 2:
-					invest_saham("Obligasi")
+					opsi_investasi("Obligasi")
 				case 3:
 					menu_invest()
 				}
