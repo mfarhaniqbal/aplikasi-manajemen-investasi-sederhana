@@ -30,7 +30,6 @@ type modaluser struct {
 var modal modaluser
 
 type portofoliouser struct {
-
 	// ASET USER DALAM BENTUR LEMBAR/UNIT	
 	Saham    float64
 	Reksa    float64
@@ -64,11 +63,12 @@ type summary struct {
 }
 
 func Menu1() {
+	//MENU AWAL
 	fmt.Println("=================")
-	fmt.Println(" Trading.com ")
+	fmt.Println(" marinvest.id ")
 	fmt.Println()
 
-	// Cetak dulu prompt
+	// Masukan nama user
 	fmt.Print("First Name: ")
 	fmt.Scanln(&firstname)
 
@@ -79,6 +79,7 @@ func Menu1() {
 }
 
 func Menu2() bool {
+	//MENU UTAMA
 	var a int
 	fmt.Println("====Start====")
 	fmt.Println("Menu")
@@ -104,7 +105,7 @@ func Menu2() bool {
 }
 
 func menu_invest() {
-
+	// MENU PILIHAN INVEST
 	var opsi_invest int
 
 	fmt.Println("================")
@@ -142,6 +143,7 @@ func menu_invest() {
 }
 
 func hitung_modal(jenis string) float64 {
+	// FUNCTION HITUNG MODAL
 	var total float64
 	var batas int
 
@@ -180,7 +182,7 @@ func convert_aset(modal, harga float64) float64 {
 
 func hitung_aset(porto, harga float64) float64 {
 	/*
-	   Konversi aset dari modal yang diinputkan dibagi harga aset saat ini
+	   hitung aset dari porto yang dipunya dikali harga aset saat ini
 	*/
 	var total float64
 
@@ -192,7 +194,7 @@ func hitung_aset(porto, harga float64) float64 {
 
 func opsi_investasi(jenis string) {
 /*
-  Fungsi untuk menambah aset yang dipilih, saat ini baru Saham yang bisa dijalankan
+  Fungsi untuk mengubah aset yang dipilih
 */
 
 
@@ -246,6 +248,7 @@ func opsi_investasi(jenis string) {
 }
 
 func ubahInvest(jenisDari string) {
+	// MENU UBAH JENIS INVEST (KONVERSI)
     var toJenis string
     var dana float64
 
@@ -280,13 +283,13 @@ func ubahInvest(jenisDari string) {
         return
     }
 
-    // 2. Input target jenis dan jumlah dana
+
     fmt.Print("Pindahkan ke (Saham/Reksa/Obligasi): ")
     fmt.Scan(&toJenis)
     fmt.Print("Masukkan jumlah dana yang ingin dipindah: Rp.")
     fmt.Scan(&dana)
 
-    // 3. Validasi harga tujuan, paksa input jika masih nol
+
     var hargaKe float64
     switch toJenis {
     case "Saham":
@@ -303,7 +306,7 @@ func ubahInvest(jenisDari string) {
     if hargaKe <= 0 {
         fmt.Printf("Harga %s minggu ini belum diinput. Masukkan harga baru: Rp.", toJenis)
         fmt.Scan(&hargaKe)
-        // Simpan ke array invest sesuai jenis
+
         switch toJenis {
         case "Saham":
             invest.Saham[iterasi.Saham] = hargaKe
@@ -314,19 +317,19 @@ func ubahInvest(jenisDari string) {
         }
     }
 
-    // 4. Hitung lembar yang dijual dan validasi kepemilikan
+
     lembarDijual := dana / hargaDari
     if *portoDari < lembarDijual {
         fmt.Println("Tidak cukup lembar untuk dijual. Batal.")
         return
     }
 
-    // 5. Kurangi data jenis asal
+
     *portoDari -= lembarDijual
     *asetDari  -= lembarDijual * hargaDari
     modalDari[idxDari] -= dana
 
-    // 6. Siapkan konteks jenis tujuan (pointer ke porto, aset, modal, idxKe)
+
     var portoKe *float64
     var asetKe  *float64
     var modalKe *[NMAX]float64
@@ -350,34 +353,21 @@ func ubahInvest(jenisDari string) {
         modalKe = &modal.Obligasi
     }
 
-    // 7. Konversi dana ke lembar baru dan update
+
     lembarBaru := dana / hargaKe
     *portoKe += lembarBaru
     *asetKe  += lembarBaru * hargaKe
     modalKe[idxKe] += dana
 
-    // 8. Tampilkan ringkasan hasil
+
     fmt.Printf("Berhasil memindahkan Rp%.0f dari %s ke %s.\n", dana, jenisDari, toJenis)
     fmt.Printf("- Lembar %s dijual: %.2f → sisa: %.2f\n", jenisDari, lembarDijual, *portoDari)
     fmt.Printf("- Lembar %s baru : %.2f → total: %.2f\n", toJenis, lembarBaru, *portoKe)
 }
 
-// template switch case
-
-    // switch jenisDari {
-    // case "Saham":
-
-    // case "Reksa":
-
-    // case "Obligasi":
-
-    // default:
-    // 	fmt.Println("Jenis aset tidak ditemukan.")
-    // 	return
-    // }	
-
 
 func tambah_invest(jenisDari string) {
+	// TAMBAH ASSET INVESTASI
 	var jumlah_aset_dibeli float64
     var opsi_menu int
     var modal_user float64
@@ -503,6 +493,7 @@ func tambah_invest(jenisDari string) {
 
 
 func hapus_invest(jenisDari string) {
+	// HAPUS ASET INVESTASI
     var danacair float64
     var pilih int
     var asetcair float64
@@ -717,6 +708,7 @@ func hapus_invest(jenisDari string) {
 }
 
 func profil() {
+	// MENU PROFIL USER
 	var jenis string
 	var modaltotal, pct float64
 	var i, maxIdx, j int
@@ -760,8 +752,9 @@ func profil() {
         }
     }
 
-    // Struktur data tetap statis
+ 
     type summary struct {
+    	// RINGKASAN ASET USER
         Jenis      string
         Nilai      float64
         Persentase float64
@@ -788,7 +781,6 @@ func profil() {
         list[i] = summary{Jenis: jenis, Nilai: nilai, Persentase: pct}
     }
 
-    // Submenu urutkan descending
     fmt.Println("\n=== Submenu Urutkan Aset ===")
     fmt.Println("1. Urutkan berdasarkan Nilai Aset")
     fmt.Println("2. Urutkan berdasarkan Persentase Profit")
@@ -825,7 +817,6 @@ func profil() {
         return
     }
 
-    // Cetak hasil sorting
     for i = 0; i < 3; i++ {
         fmt.Printf("%-8s | Nilai: Rp%.2f | Profit: %.2f%%\n",
             list[i].Jenis, list[i].Nilai, list[i].Persentase)
@@ -839,6 +830,7 @@ func profil() {
 
 
 func riwayat_investasi(jenis string) {
+	// MENU HITUNG RIWAYAT INVESTASI
 	var status int
 	fmt.Println("==================")
 	fmt.Println("Riwayat", jenis)
@@ -884,6 +876,7 @@ func riwayat_investasi(jenis string) {
 }
 
 func riwayat() { 
+	// MENU RIWAYAT
 	var opsi_menu int
 	fmt.Println("=================")
 	fmt.Println("Riwayat Investasi")
@@ -909,6 +902,7 @@ func riwayat() {
 	}
 }
 func pencarian() {
+	// MENU MENCARI ASET INVESTASI
 	var opsi_menu int
 	var minimum_saham, minimum_reksa, minimum_obligasi float64
 	var maksimum_saham, maksimum_reksa, maksimum_obligasi float64
@@ -1039,6 +1033,7 @@ func pencarian() {
 
 }
 func instrumen_investasi() {
+	// MENU ASET INVESTASI
 	var opsi_menu int
 	fmt.Println("=========================")
 	fmt.Println("===Instrumen Investasi===")
@@ -1058,50 +1053,10 @@ func instrumen_investasi() {
 	}
 }
 func main() {
+	// MAIN
 	Menu1()
 	runing := true //untuk menghentikan program
 	for runing {
 		runing = Menu2()
 	}
 }
-
-/*Tampilan :
-
-1
-Masukkan nama :
-
-2
-Hallo,... Selamat datang di aplikasi investasi
-=start=
-Minggu 1
-
-input harga saham, reksa, obligasi
-
-Input harga saham :
-Input harga reksadana :
-Input harga obligasi :
-
-Menu
-  1. Invest
-  2. Profil / data
-  3. Instrumen investasi
-  4. Akhiri minggu
-
-(fitur utama)
-if pilih Menu 1.
-  1. Tambah (pilih : reksa, saham, Obligasi) saham beres
-  2. ubah (pilih : reksa, saham, Obligasi)
-  3. hapus (pilih : reksa, saham, Obligasi)
-
-
-else if menu 2.
-  1. Cetak laporan mingguan
-  2. Cetak portofolio
-
-else if menu 3.
-  1. Harga saham waktu ke waktu
-  2. Harga reksa waktu ke waktu
-  3. Harga obligasi waktu ke waktu
-
-else if menu 4.
-  Lanjut ke minggu berikutnya, loop ke bagian start*/
